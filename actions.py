@@ -43,8 +43,6 @@ class ActionCheckStatus(Action):
         # return a random status, just a mockup
         statuses = ["received", "rejected", "interview", "unknown"]
         status = random.choice(statuses)
-        print('*' * 40)
-        print('status:', status)
         return [SlotSet("status", status)]
 
 

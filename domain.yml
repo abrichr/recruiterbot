@@ -6,12 +6,15 @@ intents:
 - technical
 - business
 entities:
-- name
+- firstname
+- lastname
 slots:
-  name:
+  firstname:
+    type: text
+  lastname:
     type: text
   positions:
-    type: text
+    type: list
   role_type:
     type: categorical
     values:
@@ -30,10 +33,8 @@ templates:
   - text: hi, I’m Rasa’s recruiting bot. How can I help?
   utter_technical_or_business:
   - text: Are you looking for a technical or a business role?
-  utter_positions:
-  - text: '{positions} are the open positions'
   utter_checking:
-  - text: Hi {name}! Let me check that for you
+  - text: Hi {firstname}! Let me check that for you
   utter_status_received:
   - text: Yes, your application has been {status}.
   utter_status_rejected:
@@ -47,7 +48,6 @@ actions:
 - utter_technical_or_business
 - action_check_positions
 - action_check_status
-- utter_positions
 - utter_checking
 - utter_status_received
 - utter_status_rejected
