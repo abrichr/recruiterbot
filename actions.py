@@ -13,6 +13,10 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
 
+# If True, ask for the user's name each time before checking their status
+FORGETFUL = True
+
+
 class ActionCheckStatus(Action):
 
     def name(self):
@@ -76,6 +80,10 @@ class ActionUtterPositions(Action):
 class ApplicationStatusForm(FormAction):
     """Form for handling application status requests"""
 
+    def __init__(self, forgetful=FORGETFUL, *args, **kwargs):
+        self.forgetful = forgetful
+        super().__init__(*args, **kwargs)
+
     def name(self) -> Text:
         """Unique identifier of the form"""
 
@@ -121,5 +129,7 @@ class ApplicationStatusForm(FormAction):
         parts = person.split(' ')
         firstname = parts[0].capitalize()
         dispatcher.utter_message(f'Hi {firstname}! Let me check that for you')
-        # erase their name so they can ask again for someone else
-        return [SlotSet('PERSON', None)]
+        if self.forgetful:
+            # erase name so user can ask again for someone else
+            return [SlotSet('PERSON', None)]
+        return []

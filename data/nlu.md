@@ -12,6 +12,7 @@
 - positions available
 - what positions are open
 - show me what you got
+- positions
 
 ## intent:inform
 - [technical](role_type)
@@ -23,3 +24,4 @@
 - i applied for a job
 - what's the status of my application
 - hi, my name is. I applied for a job and would like to know when I’ll hear back
+- status
