@@ -1,7 +1,19 @@
 # Configuration for Rasa NLU.
 # https://rasa.com/docs/rasa/nlu/components/
 language: en
-pipeline: supervised_embeddings
+pipeline:
+  - name: "WhitespaceTokenizer"
+  - name: "RegexFeaturizer"
+  - name: "CRFEntityExtractor"
+  - name: "EntitySynonymMapper"
+  - name: "CountVectorsFeaturizer"
+  - name: "EmbeddingIntentClassifier"
+  - name: "SpacyEntityExtractor"
+    dimensions: ["PERSON"]
+  - name: "SpacyNLP"
+    model: "en_core_web_sm"
+    case_sensitive: false
+
 
 # Configuration for Rasa Core.
 # https://rasa.com/docs/rasa/core/policies/
@@ -9,3 +21,4 @@ policies:
   - name: MemoizationPolicy
   - name: KerasPolicy
   - name: MappingPolicy
+  - name: FormPolicy

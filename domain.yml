@@ -2,16 +2,11 @@ intents:
 - greet
 - positions_open_now
 - inform
-- when_hear_back
-- technical
-- business
+- application_status
 entities:
-- firstname
-- lastname
+- PERSON
 slots:
-  firstname:
-    type: text
-  lastname:
+  PERSON:
     type: text
   positions:
     type: list
@@ -33,24 +28,26 @@ templates:
   - text: hi, I’m Rasa’s recruiting bot. How can I help?
   utter_technical_or_business:
   - text: Are you looking for a technical or a business role?
-  utter_checking:
-  - text: Hi {firstname}! Let me check that for you
   utter_status_received:
-  - text: Yes, your application has been {status}.
+  - text: Yes, your application has been received.
   utter_status_rejected:
-  - text: Unfortunately, your application has been {status}.
+  - text: Unfortunately, your application has been rejected.
   utter_status_interview:
-  - text: Congratulations, you have an {status}!
+  - text: Congratulations, you have an interview!
   utter_status_unknown:
   - text: Your status is {status}, please contact support.
+  utter_ask_PERSON:
+  - text: What is your name?
+forms:
+  - application_status_form
 actions:
 - utter_greet
 - utter_technical_or_business
 - action_check_positions
 - action_check_status
-- utter_checking
 - utter_status_received
 - utter_status_rejected
 - utter_status_interview
 - utter_status_unknown
 - action_utter_positions
+- action_utter_status

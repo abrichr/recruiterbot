@@ -1,43 +1,22 @@
-# This files contains your custom actions which can be used to run
-# custom Python code.
-#
-# See this guide on how to implement these action:
-# https://rasa.com/docs/rasa/core/actions/#custom-actions/
-
-
-# This is a simple example for a custom action which utters "Hello World!"
-
-# from typing import Any, Text, Dict, List
-#
-# from rasa_sdk import Action, Tracker
-# from rasa_sdk.executor import CollectingDispatcher
-#
-#
-# class ActionHelloWorld(Action):
-#
-#     def name(self) -> Text:
-#         return "action_hello_world"
-#
-#     def run(self, dispatcher: CollectingDispatcher,
-#             tracker: Tracker,
-#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#
-#         dispatcher.utter_message("Hello World!")
-#
-#         return []
+"""
+Custom actions for Rasa's Recruiting Bot
+"""
 
 from rasa_sdk import Action
 from rasa_sdk.events import SlotSet
 import random
+
+from typing import Dict, Text, Any, List, Union, Optional
+
+from rasa_sdk import Tracker
+from rasa_sdk.executor import CollectingDispatcher
+from rasa_sdk.forms import FormAction
 
 
 class ActionCheckStatus(Action):
 
     def name(self):
         return "action_check_status"
-
-    def slot_mappings(self):
-        return { "name": self.from_text(intent=None)}
 
     def run(self, dispatcher, tracker, domain):
         # return a random status, just a mockup
@@ -90,5 +69,57 @@ class ActionUtterPositions(Action):
         elif positions:
             utterance = f'{positions[0]} is the only open position.'
         else:
-            utterance = f'There are no {role_type} positions available.'
+            utterance = f'There are no positions available.'
         dispatcher.utter_message(utterance)
+
+
+class ApplicationStatusForm(FormAction):
+    """Form for handling application status requests"""
+
+    def name(self) -> Text:
+        """Unique identifier of the form"""
+
+        return "application_status_form"
+
+    @staticmethod
+    def required_slots(tracker: Tracker) -> List[Text]:
+        """A list of required slots that the form has to fill"""
+
+        return ["PERSON"]
+
+    def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
+        """A dictionary to map required slots to
+            - an extracted entity
+            - intent: value pairs
+            - a whole message
+            or a list of them, where a first match will be picked"""
+
+        return {
+            "PERSON": [
+                # if the user has already entered their name in the message
+                self.from_entity(entity="PERSON"),
+                # if we have to ask them for it explicitly, they may not
+                # capitalize it, and it won't be detected as a PERSON, so just
+                # use whatever they say
+                self.from_text()
+            ]
+        }
+
+    def submit(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict]:
+        """Once all the slots are filled, greet the user and reset the slots
+
+        Note: in a real application, the slot resetting should happen after
+        ActionCheckStatus, since presumably that action would use this slot.
+        """
+
+        person = tracker.get_slot("PERSON")
+        parts = person.split(' ')
+        firstname = parts[0].capitalize()
+        dispatcher.utter_message(f'Hi {firstname}! Let me check that for you')
+        # erase their name so they can ask again for someone else
+        return [SlotSet('PERSON', None)]
