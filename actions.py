@@ -63,14 +63,10 @@ class ActionCheckPositions(Action):
             "business": []
         }
         position_type = tracker.get_slot("role_type")
-        print('position_type:', position_type)
         if position_type == "any":
             relevant_positions = positions["technical"] + positions["business"]
         else:
             relevant_positions = positions.get(position_type, [])
-        print('*' * 40)
-        print('relevant_positions:', relevant_positions)
-        print('*' * 40)
         return [SlotSet("positions", relevant_positions)]
 
 
@@ -81,11 +77,20 @@ class ActionUtterPositions(Action):
 
     def run(self, dispatcher, tracker, domain):
         positions = tracker.get_slot("positions")
+        # capitalize if not already
+        positions = [
+            ' '.join([
+                w.title() if w.islower() else w for w in position.split()
+            ])
+            for position in positions
+        ]
         role_type = tracker.get_slot("role_type")
-        if positions:
+        if len(positions) > 1:
             all_but_last = ', '.join(positions[:-1])
             last = positions[-1]
-            utterance = f'{all_but_last} and {last} are the open positions'
+            utterance = f'{all_but_last} and {last} are the open positions.'
+        elif positions:
+            utterance = f'{positions[0]} is the only open position.'
         else:
-            utterance = f'There are no {role_type} positions available'
+            utterance = f'There are no {role_type} positions available.'
         dispatcher.utter_message(utterance)

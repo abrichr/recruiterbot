@@ -7,15 +7,6 @@
   - action_check_positions
   - action_utter_positions
 
-## positions open now -- business
-* greet
-  - utter_greet
-* positions_open_now
-  - utter_technical_or_business
-* inform{"role_type": "business"}
-  - action_check_positions
-  - action_utter_positions
-
 ## hear back -- received
 * when_hear_back{"name": "Ali"}
   - slot{"name": "Ali"}

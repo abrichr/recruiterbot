@@ -17,6 +17,7 @@ slots:
     values:
     - technical
     - business
+    - any
   status:
     type: categorical
     values:
