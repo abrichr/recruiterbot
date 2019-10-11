@@ -5,9 +5,20 @@ positions are open, and checks the status of their application.
 
 ## Usage
 
+#### Training
 ```
 rasa train
+```
+
+#### Interactive Testing
+```
 rasa shell
+```
+
+#### Automated Testing
+```
+rasa test --stories e2e_stories.md --e2e
+cat results/failed_stories.md
 ```
 
 ## Open Positions
@@ -28,12 +39,14 @@ responds to the user.
 ## Application Status
 
 Checking the status of an application requires that the user provide their
-name. This is handled by the `ApplicationStatusForm`, which has `PERSON` as
-a required slot.  This slot can get filled either by the corresponding `PERSON`
-entity populated by the `SpacyEntityExtractor` (specified in the pipeline in
-`config.yml`), or by whatever text the user responds with when the bot asks
-them for their name. This allows the user to specify their name upon greeting
-the bot, and not have the bot ask them again when they check for their status.
+name, which could be just about anything. This is handled by the
+`ApplicationStatusForm`, which has `PERSON` as a required slot.  This slot can
+get filled either by the corresponding `PERSON` entity populated by the
+`SpacyEntityExtractor` (specified in the pipeline in `config.yml`), or by
+whatever text the user responds with when the bot asks them for their name.
+This allows the user to specify their name upon greeting the bot, and not have
+the bot ask them again when they check for their status.
+
 For example:
 
 ```
@@ -96,14 +109,22 @@ Checking the status of an application is trained on four separate stories and
 corresponding utterances, one for each possible status (received, rejected,
 interview, or unknown). Although it is possible to implement this with a single
 story and an action that formats the response, this design does not result in
-enough training data for the bot to be reliable.
+enough training data for the bot to be sufficiently reliable.
 
+## Insults
 
-## Tests
-
-Some end to end stories are included in `e2e_stories.md`. To test, run:
+If the user says an insult at any point, the bot responds appropriately, and
+then resumes where it left off:
 
 ```
-rasa test --stories e2e_stories.md --e2e
-cat results/failed_stories.md
+Your input ->  hi
+hi, I’m Rasa’s recruiting bot. How can I help?
+Your input ->  you suck
+That's not very nice
+Your input ->  positions
+Are you looking for a technical or a business role?
+Your input ->  stupid bot
+That's not very nice
+Your input ->  technical
+Machine Learning Engineer and ML Product Success Engineer are the open positions.
 ```

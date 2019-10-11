@@ -10,6 +10,7 @@ actions:
 - utter_status_rejected
 - utter_status_unknown
 - utter_technical_or_business
+- utter_respond_insult
 entities:
 - PERSON
 - role_type
@@ -20,6 +21,7 @@ intents:
 - inform
 - positions_open_now
 - application_status
+- insult: {triggers: utter_respond_insult}
 slots:
   PERSON:
     type: text
@@ -55,3 +57,5 @@ templates:
   - text: Your status is {status}, please contact support.
   utter_technical_or_business:
   - text: Are you looking for a technical or a business role?
+  utter_respond_insult:
+  - text: That's not very nice

@@ -34,3 +34,7 @@
 - what [technical](role_type) positions are available?
 - show me [business](role_type) positions
 - show me [technical](role_type) positions
+
+## intent:insult
+- stupid bot
+- you suck
