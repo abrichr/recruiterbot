@@ -1,5 +1,4 @@
 TODO:
-- tests
 - train interactive
 
 --
@@ -91,4 +90,12 @@ Unfortunately, your application has been rejected.
 Your input ->  my name is Ali Park. what is the status of my application?
 Hi Ali! Let me check that for you
 Your status is unknown, please contact support.
+```
+
+## Tests
+
+Some end to end stories are included in `data/e2estories.md`. To test, run:
+
+```
+rasa test --stories data/e2e_stories.md --e2e
 ```
