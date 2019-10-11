@@ -8,6 +8,13 @@ TODO:
 This repo contains a Rasa bot that greets applicants, checks which
 positions are open, and checks the status of their application.
 
+## Usage
+
+```
+rasa train
+rasa shell
+```
+
 ## Open Positions
 
 Checking which positions are open is implemented by a single story.
@@ -94,8 +101,9 @@ Your status is unknown, please contact support.
 
 ## Tests
 
-Some end to end stories are included in `data/e2estories.md`. To test, run:
+Some end to end stories are included in `e2estories.md`. To test, run:
 
 ```
-rasa test --stories data/e2e_stories.md --e2e
+rasa test --stories e2e_stories.md --e2e
+cat results/failed_stories.md
 ```

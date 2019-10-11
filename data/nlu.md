@@ -16,8 +16,11 @@
 
 ## intent:inform
 - [technical](role_type)
+- A [technical](role_type) one
 - [business](role_type)
+- A [business](role_type) one
 - [any](role_type)
+- [any](role_type) will do
 
 ## intent:application_status
 - when will i hear back

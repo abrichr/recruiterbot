@@ -44,10 +44,9 @@ actions:
 - utter_greet
 - utter_technical_or_business
 - action_check_positions
+- action_utter_positions
 - action_check_status
 - utter_status_received
 - utter_status_rejected
 - utter_status_interview
 - utter_status_unknown
-- action_utter_positions
-- action_utter_status
