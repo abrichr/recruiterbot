@@ -29,54 +29,6 @@ class ActionCheckStatus(Action):
         return [SlotSet("status", status)]
 
 
-class ActionCheckPositions(Action):
-
-    def name(self):
-        return "action_check_positions"
-
-    def run(self, dispatcher, tracker, domain):
-        # return hard-coded open positions, this would normally come from an API
-        positions = { 
-            "technical": [
-                "machine learning engineer",
-                "ML product success engineer"
-            ],
-            "business": []
-        }
-        position_type = tracker.get_slot("role_type")
-        if position_type == "any":
-            relevant_positions = positions["technical"] + positions["business"]
-        else:
-            relevant_positions = positions.get(position_type, [])
-        return [SlotSet("positions", relevant_positions)]
-
-
-class ActionUtterPositions(Action):
-
-    def name(self):
-        return "action_utter_positions"
-
-    def run(self, dispatcher, tracker, domain):
-        positions = tracker.get_slot("positions")
-        # capitalize if not already
-        positions = [
-            ' '.join([
-                w.title() if w.islower() else w for w in position.split()
-            ])
-            for position in positions
-        ]
-        role_type = tracker.get_slot("role_type")
-        if len(positions) > 1:
-            all_but_last = ', '.join(positions[:-1])
-            last = positions[-1]
-            utterance = f'{all_but_last} and {last} are the open positions.'
-        elif positions:
-            utterance = f'{positions[0]} is the only open position.'
-        else:
-            utterance = f'There are no positions available.'
-        dispatcher.utter_message(utterance)
-
-
 class ApplicationStatusForm(FormAction):
     """Form for handling application status requests"""
 
@@ -126,10 +78,58 @@ class ApplicationStatusForm(FormAction):
         """
 
         person = tracker.get_slot("PERSON")
-        parts = person.split(' ')
+        parts = person.split(" ")
         firstname = parts[0].capitalize()
-        dispatcher.utter_message(f'Hi {firstname}! Let me check that for you')
+        dispatcher.utter_message(f"Hi {firstname}! Let me check that for you")
         if self.forgetful:
             # erase name so user can ask again for someone else
-            return [SlotSet('PERSON', None)]
+            return [SlotSet("PERSON", None)]
         return []
+
+
+class ActionCheckPositions(Action):
+
+    def name(self):
+        return "action_check_positions"
+
+    def run(self, dispatcher, tracker, domain):
+        # return hard-coded open positions, this would normally come from an API
+        positions = {
+            "technical": [
+                "machine learning engineer",
+                "ML product success engineer"
+            ],
+            "business": []
+        }
+        position_type = tracker.get_slot("role_type")
+        if position_type == "any":
+            relevant_positions = positions["technical"] + positions["business"]
+        else:
+            relevant_positions = positions.get(position_type, [])
+        return [SlotSet("positions", relevant_positions)]
+
+
+class ActionUtterPositions(Action):
+
+    def name(self):
+        return "action_utter_positions"
+
+    def run(self, dispatcher, tracker, domain):
+        positions = tracker.get_slot("positions")
+        # capitalize if not already
+        positions = [
+            " ".join([
+                w.title() if w.islower() else w for w in position.split()
+            ])
+            for position in positions
+        ]
+        role_type = tracker.get_slot("role_type")
+        if len(positions) > 1:
+            all_but_last = ", ".join(positions[:-1])
+            last = positions[-1]
+            utterance = f"{all_but_last} and {last} are the open positions."
+        elif positions:
+            utterance = f"{positions[0]} is the only open position."
+        else:
+            utterance = f"There are no positions available."
+        dispatcher.utter_message(utterance)

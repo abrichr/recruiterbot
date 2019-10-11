@@ -1,8 +1,3 @@
-TODO:
-- train interactive
-
---
-
 # Rasa Recruiting Bot
 
 This repo contains a Rasa bot that greets applicants, checks which
@@ -25,18 +20,12 @@ can be one of "technical", "business", or "any". However, if the user says
 something like "what technical positions are open", the "role_type" slot is
 filled directly and no follow-up is required.
 
-In either cas, the `ActionCheckPositions` class then gets the appropriate
+In either case, the `ActionCheckPositions` class then gets the appropriate
 positions and fills the "positions" slot. Then, the `ActionUtterPositions`
 class formats the result depending on the number of positions available, and
 responds to the user.
 
 ## Application Status
-
-Checking the status of an application is implemented with four separate
-stories and corresponding utterances, one for each possible status (received,
-rejected, interview, or unknown). Although it is possible to implement this
-with a single story and an action that formats the response, this design
-did not result in enough training data for the bot to be reliable.
 
 Checking the status of an application requires that the user provide their
 name. This is handled by the `ApplicationStatusForm`, which has `PERSON` as
@@ -102,6 +91,13 @@ Your input ->  my name is Ali Park. what is the status of my application?
 Hi Ali! Let me check that for you
 Your status is unknown, please contact support.
 ```
+
+Checking the status of an application is trained on four separate stories and
+corresponding utterances, one for each possible status (received, rejected,
+interview, or unknown). Although it is possible to implement this with a single
+story and an action that formats the response, this design does not result in
+enough training data for the bot to be reliable.
+
 
 ## Tests
 
