@@ -14,7 +14,7 @@ from rasa_sdk.forms import FormAction
 
 
 # If True, ask for the user's name each time before checking their status
-FORGETFUL = True
+FORGETFUL = False
 
 
 class ActionCheckStatus(Action):

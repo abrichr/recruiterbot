@@ -2,7 +2,7 @@
 * greet
   - utter_greet
 
-## positions open now -- technical
+## positions open now
 * positions_open_now
   - utter_technical_or_business
 * inform
