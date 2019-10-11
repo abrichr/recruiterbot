@@ -17,15 +17,18 @@ rasa shell
 
 ## Open Positions
 
-Checking which positions are open is implemented by a single story.
 If the user says something like "what positions are open", the
 bot will follow up by asking whether they are looking for a technical
 or a business role. This is implemented as an utterance with a template
-defined in `domain.yml`, and a categorical slot whose values can be
-"technical", "business", or "any". The `ActionCheckPositions` class
-gets the appropriate positions and fills the slot. Then, the
-`ActionUtterPositions` class formats the result depending on the number
-of positions available, and responds to the user.
+defined in `domain.yml`, and a categorical slot named "role_type" whose value
+can be one of "technical", "business", or "any". However, if the user says
+something like "what technical positions are open", the "role_type" slot is
+filled directly and no follow-up is required.
+
+In either cas, the `ActionCheckPositions` class then gets the appropriate
+positions and fills the "positions" slot. Then, the `ActionUtterPositions`
+class formats the result depending on the number of positions available, and
+responds to the user.
 
 ## Application Status
 
@@ -33,13 +36,13 @@ Checking the status of an application is implemented with four separate
 stories and corresponding utterances, one for each possible status (received,
 rejected, interview, or unknown). Although it is possible to implement this
 with a single story and an action that formats the response, this design
-did not contain enough training data for the bot to be reliable.
+did not result in enough training data for the bot to be reliable.
 
 Checking the status of an application requires that the user provide their
 name. This is handled by the `ApplicationStatusForm`, which has `PERSON` as
 a required slot.  This slot can get filled either by the corresponding `PERSON`
 entity populated by the `SpacyEntityExtractor` (specified in the pipeline in
-``config.yml`), or by whatever text the user responds with when the bot asks
+`config.yml`), or by whatever text the user responds with when the bot asks
 them for their name. This allows the user to specify their name upon greeting
 the bot, and not have the bot ask them again when they check for their status.
 For example:
@@ -53,9 +56,10 @@ Your status is unknown, please contact support.
 ```
 
 The `ApplicationStatusForm` responds with an utterance containing the user's
-first name only. In addition, it takes an optional `forgetful` parameter which
-clears the `PERSON` slot after it's been submitted, forcing the user to specify
-their name each time they want to check the status of an application.
+first name only. In addition, it takes an optional `forgetful` parameter which,
+if True, clears the `PERSON` slot after it's been submitted, forcing the user
+to specify their name each time they want to check the status of an
+application.
 
 For example:
 
@@ -101,7 +105,7 @@ Your status is unknown, please contact support.
 
 ## Tests
 
-Some end to end stories are included in `e2estories.md`. To test, run:
+Some end to end stories are included in `e2e_stories.md`. To test, run:
 
 ```
 rasa test --stories e2e_stories.md --e2e

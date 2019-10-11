@@ -9,6 +9,18 @@
   - action_check_positions
   - action_utter_positions
 
+## positions open now -- business
+* positions_open_now{"role_type": "business"}
+    - slot{"role_type": "business"}
+    - action_check_positions
+    - action_utter_positions
+
+## positions open now -- technical
+* positions_open_now{"role_type": "technical"}
+    - slot{"role_type": "technical"}
+    - action_check_positions
+    - action_utter_positions
+
 ## application status received
 * application_status
   - application_status_form
